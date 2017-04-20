@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>gongshi</title>
+	<link rel="stylesheet" href="./themes/default/default.css" />
+	<link rel="stylesheet" href="./plugins/code/prettify.css" />
+	<style>
+		.ke-icon-gongshi {
+	        background-image: url(./skins/default/default.gif);
+	        background-position: 0px -672px;
+	        width: 16px;
+	        height: 16px;
+		}
+	  .ke-icon-audio {
+	    background-position: 0px -528px;
+	    width: 16px;
+	    height: 16px;
+	  }
+	  .ke-content>img{
+	  	height: 20px;
+	  	width: 20px;
+	  }
+	  .kityformula-container{
+	  		width: 100%;
+	  		height: 100%;
+	  }
+	  .kityformula{
+	  	width: 200px;
+	  	height: 100px;
+	  	background-color: pink;
+	  	position: fixed;
+	  	top: 0px;
+	  	bottom: 0px;
+	  	left: 0px;
+	  	right: 0px;
+	  	margin: auto;
+	  }
+	  #editor-container{
+	  	display: none;
+	  }
+	  #editor{
+	  	
+	  	width: 900px;
+	  	height: 600px;
+	  }
+	</style>
+</head>
+<body>
+<textarea name="content" id="kindeditor" cols="30" rows="10"></textarea>
+
+<!-- <div class="kityformula-container">
+	<div class="kityformula"></div>
+</div> -->
+<div id="editor-container">
+	<button onclick="exportImg()">确认</button>
+	<!-- <iframe id="editor" src="./kityformula/index.html"></iframe> -->
+</div>
+
+<script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script charset="utf-8" src="./kindeditor.js"></script>
+<script charset="utf-8" src="./lang/zh_CN.js"></script>
+<script charset="utf-8" src="./plugins/code/prettify.js"></script>
+<script>
+	//实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+
+
+	KindEditor.lang({			
+	 audio : 'MP3',
+	 gongshi : "gongshi"
+	});
+	 KindEditor.options.htmlTags['audio'] = ['src','controls','autoplay','type'];
+	 KindEditor.options.htmlTags['source'] = ['src','controls','autoplay','type'];
+	 KindEditor.play = function(){
+	 	console.log(111)
+	 }
+	 KindEditor.ready(function(K) {
+		console.log("kindeditor ready")
+        var options = {
+		        cssPath : '/css/index.css',
+		        filterMode : true,
+		        items : ['source','audio','gongshi']
+		};
+		var editor = K.create('#kindeditor', options);
+		window.insertHtml = function(){
+			K.insertHtml('#kindeditor', '<audio controls src="horse.ogg"></audio>');
+		}
+		window.getHtml = function(){
+			var html = editor.text();
+			console.log(html)
+		}
+    });
+	   function exportImg(){
+            
+            window.frames[1].kityformula.execCommand("get.image.data",function(data){
+                console.log(data)
+                $("img").attr('src',data.img)
+                // console.log($(".ke-content"))
+                window.keditor.insertHtml('<img src="'+ data.img +'" />');
+                $("#editor-container").hide();
+            })
+        }
+
+	   
+</script>
+</body>
+</html>
